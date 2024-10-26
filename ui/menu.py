@@ -1,5 +1,3 @@
-# cipher_menu.py
-
 from tkinter import *
 from tkinter import messagebox
 from tkinter.font import Font
@@ -16,18 +14,14 @@ class CipherMenu:
         self.root.geometry("500x600")
         self.root.configure(bg="#2c2f33")
 
-        # Налаштування шрифтів
         self.header_font = Font(family="Arial", size=16, weight="bold")
         self.label_font = Font(family="Arial", size=12)
 
-        # Основний фрейм з рамкою
         self.frame = Frame(self.root, bg="#2c2f33", bd=5, relief=GROOVE)
         self.frame.pack(pady=20, padx=20, fill=BOTH, expand=True)
 
-        # Заголовок
         self.create_label("Choose Cipher Algorithm", self.header_font, pady=20)
 
-        # Створення радіокнопок для вибору шифру
         self.cipher_choice = StringVar(value="1")
         cipher_options = [
             ("Caesar Cipher", "1"),
@@ -37,31 +31,23 @@ class CipherMenu:
         ]
         self.create_radio_buttons(cipher_options)
 
-        # Поле для введення тексту
         self.text_entry = self.create_labeled_entry("Enter text to encrypt", "Example: hello")
 
-        # Поле для введення ключа
         self.key_entry = self.create_labeled_entry("Enter Key or Shift", "Example: 2,3")
 
-        # Кнопка для шифрування
         self.create_button("Encrypt", self.encrypt)
 
-        # Виведення результату
         self.result_label = self.create_label("", pady=10)
 
-        # Оновлення підказок при зміні вибору шифру
         self.cipher_choice.trace("w", self.update_placeholders)
 
-        # Встановлення початкових підказок
         self.update_placeholders()
 
-    # Допоміжна функція для створення міток
     def create_label(self, text, font=None, pady=0):
         label = Label(self.frame, text=text, font=font or self.label_font, bg="#2c2f33", fg="#ffffff")
         label.pack(pady=pady, padx=10, fill=X)
         return label
 
-    # Допоміжна функція для створення радіокнопок
     def create_radio_buttons(self, options):
         frame_cipher = Frame(self.frame, bg="#2c2f33")
         frame_cipher.pack(pady=10, fill=X)
@@ -69,86 +55,77 @@ class CipherMenu:
             Radiobutton(frame_cipher, text=text, variable=self.cipher_choice, value=value, font=self.label_font,
                         bg="#2c2f33", fg="#ffffff", selectcolor="#7289da").pack(anchor=W, padx=20)
 
-    # Допоміжна функція для створення міток і полів введення
     def create_labeled_entry(self, label_text, placeholder_text):
-        # Створення мітки
         label = Label(self.frame, text=label_text, font=self.label_font, bg="#2c2f33", fg="#ffffff")
         label.pack(pady=5, padx=10, fill=X)
 
-        # Створення поля вводу
         entry = Entry(self.frame, width=40, bd=3, bg="#23272a", fg="#aaaaaa", insertbackground="#ffffff", relief=FLAT)
         entry.pack(pady=5, padx=10, fill=X)
-        entry.insert(0, placeholder_text)  # Вставлення підказки в поле вводу
+        entry.insert(0, placeholder_text)  
 
-        # Видалення підказки при фокусуванні
         entry.bind("<FocusIn>", lambda e: self.clear_placeholder(entry, placeholder_text))
         entry.bind("<FocusOut>", lambda e: self.set_placeholder(entry, placeholder_text))
 
         return entry
 
-    # Допоміжна функція для створення кнопок
     def create_button(self, text, command):
         button = Button(self.frame, text=text, command=command, font=self.label_font, bg="#7289da", fg="#ffffff",
                         activebackground="#5b6eae", activeforeground="#ffffff", relief=FLAT)
         button.pack(pady=20, padx=10, ipadx=10, ipady=5, fill=X)
 
-    # Функція для оновлення підказок
     def update_placeholders(self, *args):
         cipher = self.cipher_choice.get()
-        if cipher == '1':  # Caesar Cipher
+        if cipher == '1':  
             self.text_entry.delete(0, END)
             self.text_entry.insert(0, "Example: hello")
             self.key_entry.delete(0, END)
             self.key_entry.insert(0, "Example: 2,3")
-        elif cipher == '2':  # Vigenère Cipher
+        elif cipher == '2': 
             self.text_entry.delete(0, END)
             self.text_entry.insert(0, "Example: hello")
             self.key_entry.delete(0, END)
             self.key_entry.insert(0, "Example: key")
-        elif cipher == '3':  # Gamma Cipher
+        elif cipher == '3': 
             self.text_entry.delete(0, END)
             self.text_entry.insert(0, "Example: hello")
             self.key_entry.delete(0, END)
             self.key_entry.insert(0, "Example: key")
-        elif cipher == '4':  # RSA Cipher
+        elif cipher == '4':  
             self.text_entry.delete(0, END)
-            self.text_entry.insert(0, "Example: message")
+            self.text_entry.insert(0, "Example: hello")
             self.key_entry.delete(0, END)
             self.key_entry.insert(0, "Example: 3, 13, 5")
 
-    # Оновлення підказки при втраті фокусу
     def set_placeholder(self, entry, placeholder_text):
-        if not entry.get() or entry.get() == placeholder_text:  # Якщо поле пусте або текст відповідає підказці
-            entry.delete(0, END)  # Очищаємо поле
-            entry.insert(0, placeholder_text)  # Вставляємо підказку
-            entry.config(fg="#aaaaaa")  # Змінюємо колір тексту на сірий
+        if not entry.get() or entry.get() == placeholder_text:  
+            entry.delete(0, END)  
+            entry.insert(0, placeholder_text)  
+            entry.config(fg="#aaaaaa") 
 
-    # Очищення підказки при фокусуванні
     def clear_placeholder(self, entry, placeholder_text):
-        if entry.get() == placeholder_text:  # Якщо текст відповідає підказці
-            entry.delete(0, END)  # Очищаємо поле
-            entry.config(fg="#ffffff")  # Змінюємо колір тексту на білий
+        if entry.get() == placeholder_text:  
+            entry.delete(0, END) 
+            entry.config(fg="#ffffff") 
 
-    # Функція для шифрування
     def encrypt(self):
         text = self.text_entry.get()
         choice = self.cipher_choice.get()
 
-        if text == "Example: hello" or text == "":  # Якщо введений текст відповідає підказці
+        if text == "Example: hello" or text == "": 
             self.display_error("Error: Please enter text to encrypt.")
             return
 
-        if choice == '1':  # Caesar Cipher
+        if choice == '1': 
             shifts = self.key_entry.get().strip()
             try:
-                shift_list = [int(shift.strip()) for shift in shifts.split(',')]  # Виконуємо шифрування
+                shift_list = [int(shift.strip()) for shift in shifts.split(',')] 
             except ValueError as e:
                 self.display_error("Error: Enter valid shifts as comma-separated numbers.")
                 return
-            cipher = CaesarCipher(shift_list)  # Створюємо об'єкт шифру Цезаря з кількома зсувами
+            cipher = CaesarCipher(shift_list)  
             encrypted = cipher.encrypt(text)
 
-        elif choice == '2':  # Vigenère Cipher
+        elif choice == '2':  
             try:
                 key = validate_vigenere_key(self.key_entry.get().strip())
                 cipher = VigenereCipher(key)
@@ -157,7 +134,7 @@ class CipherMenu:
                 self.display_error(str(e))
                 return
 
-        elif choice == '3':  # Gamma Cipher
+        elif choice == '3':
             try:
                 key = validate_gamma_key(self.key_entry.get().strip())
                 cipher = GammaCipher(key)
@@ -166,7 +143,7 @@ class CipherMenu:
                 self.display_error(str(e))
                 return
 
-        elif choice == '4':  # RSA Cipher
+        elif choice == '4': 
             try:
                 p, q, exponent = self.key_entry.get().split(',')
                 p, q, exponent = validate_rsa_keys(p.strip(), q.strip(), exponent.strip())
@@ -182,14 +159,12 @@ class CipherMenu:
                 self.display_error(f"Error: {str(e)}")
                 return
 
-        self.result_label.config(text=f"Encrypted text: {encrypted}")  # Відображення результату
+        self.result_label.config(text=f"Encrypted text: {encrypted}") 
 
-    # Функція для відображення помилок
     def display_error(self, message):
         messagebox.showerror("Error", message)
 
 
-# Головна функція
 if __name__ == "__main__":
     root = Tk()
     app = CipherMenu(root)

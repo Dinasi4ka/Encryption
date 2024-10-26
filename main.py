@@ -8,6 +8,6 @@ from tkinter import Tk
 
 if __name__ == "__main__":
     root = Tk()
-    root.geometry("600x600")  # Початковий розмір вікна
+    root.geometry("600x600") 
     app = CipherMenu(root)
     root.mainloop()
